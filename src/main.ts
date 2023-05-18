@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  // app.enableCors({ origin: ['https://nestjs-test-9lm8.vercel.app'] });
+  app.enableCors({ origin: ['https://vuejs-notion-blog.vercel.app/'] });
   await app.listen(3000);
 }
 
