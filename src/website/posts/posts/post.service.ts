@@ -25,13 +25,24 @@ export class PostService {
     );
 
     return NotionPageToHtml.convert(url, {
-      // bodyContentOnly: true,
-      excludeHeaderFromBody: true,
-    }).then((result) => {
-      return {
-        html: result.html,
-        title: result.title,
-      };
-    });
+      bodyContentOnly: true,
+      // excludeHeaderFromBody: true,
+      // excludeTitleFromHead: true,
+      // excludeMetadata: true,
+      // excludeCSS: true
+    })
+      .then((result) => {
+        return {
+          html: result.html,
+          title: result.title,
+        };
+      })
+      .catch((error) => {
+        console.log(error);
+        return {
+          html: '',
+          title: '',
+        };
+      });
   }
 }

@@ -12,7 +12,7 @@ export class PostRepository {
   }
 
   findAll(filter = {}) {
-    return this.postMode.find(filter);
+    return this.postMode.find(filter).sort({ title: 1 });
   }
 
   bulkCreateOrUpdate(posts: any[]) {

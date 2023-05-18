@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({origin: ['https://nestjs-test-9lm8.vercel.app']});
   await app.listen(3000);
 }
 
