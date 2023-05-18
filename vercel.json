@@ -1,4 +1,5 @@
 {
+  "name": "NestJS Blog App",
   "version": 2,
   "buildCommand": "npm run build",
   "builds": [
