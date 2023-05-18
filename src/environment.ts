@@ -6,4 +6,4 @@ export const Environment = {
   },
 };
 
-export const IsIgnoreEnvFile = EnvironmentType !== Environment.TYPE.ENV;
+export const IsIgnoreEnvFile = false;
