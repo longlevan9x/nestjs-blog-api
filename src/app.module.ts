@@ -23,6 +23,7 @@ import { JwtAuthGuard } from './app/guards/jwt-auth.guard';
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       // isGlobal: true,
+      ignoreEnvFile: true,
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AdminModule,
