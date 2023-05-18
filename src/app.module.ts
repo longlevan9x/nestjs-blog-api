@@ -9,7 +9,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { WebsiteModule } from './website/website.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './app/guards/jwt-auth.guard';
-import { Environment, EnvironmentType } from './environment';
+import { IsIgnoreEnvFile } from './environment';
 
 @Module({
   controllers: [AppController],
@@ -24,7 +24,7 @@ import { Environment, EnvironmentType } from './environment';
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       // isGlobal: true,
-      ignoreEnvFile: EnvironmentType !== Environment.TYPE.ENV,
+      ignoreEnvFile: IsIgnoreEnvFile,
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AdminModule,

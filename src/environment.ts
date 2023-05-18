@@ -5,3 +5,5 @@ export const Environment = {
     SHELL: 'shell',
   },
 };
+
+export const IsIgnoreEnvFile = EnvironmentType !== Environment.TYPE.ENV;
