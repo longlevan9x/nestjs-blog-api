@@ -9,8 +9,6 @@ async function bootstrap() {
 
   app.enableCors({
     origin: function (origin, callback) {
-      origin = origin === undefined ? 'nullorigin' : origin;
-
       if (whitelist.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
