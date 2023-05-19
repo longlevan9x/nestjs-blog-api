@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { Cron } from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { NotionPageToHtml } from 'notion-page-to-html/dist/main/use-cases/notion-api-to-html';
 import { PostRepository } from 'src/app/repositories/post.repository';
 import { PostConstant } from 'src/app/constants/post.constant';
@@ -16,7 +16,8 @@ export class PostService {
     private readonly notionService: NotionService,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  // @Cron('*/5 * * * * *')
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async fetchPostsFromNotion() {
     this.logger.debug('Called when the current second is 5');
 
