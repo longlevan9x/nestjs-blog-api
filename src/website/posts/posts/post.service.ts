@@ -43,7 +43,7 @@ export class PostService {
         };
       })
       .catch((error) => {
-        this.logger.error(error.stack);
+        this.logger.error('getPostContent', error.stack);
         return {
           html: '',
           title: '',
