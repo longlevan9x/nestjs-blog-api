@@ -23,9 +23,11 @@ export class PostService {
     try {
       const posts = await this.notionService.getPosts();
       const rs = await this.postRepository.bulkCreateOrUpdate(posts);
-      console.log('PostService.fetchPostsFromNotion s', rs);
+      this.logger.log(
+        'PostService.fetchPostsFromNotion s ' + JSON.stringify(rs),
+      );
     } catch (e) {
-      console.log('PostService.fetchPostsFromNotion e', e);
+      this.logger.error('PostService.fetchPostsFromNotion e', e.stack);
     }
   }
 
@@ -67,5 +69,9 @@ export class PostService {
         title: result.title,
       };
     });
+  }
+
+  getPostsRaw() {
+    return this.notionService.getPostsRaw();
   }
 }

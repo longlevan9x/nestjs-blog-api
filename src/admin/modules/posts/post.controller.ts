@@ -26,6 +26,11 @@ export class PostController {
     return this.postService.findAll();
   }
 
+  @Get('/raw')
+  getRaw() {
+    return this.postService.getPostsRaw();
+  }
+
   @Get('/:id/content')
   async getContent(@Param('id') id: string, @Query() query) {
     return this.postService.getPostContent(id).then((result) => result.html);

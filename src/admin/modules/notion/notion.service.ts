@@ -1,16 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Client } from '@notionhq/client';
 import * as process from 'process';
-import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
-import { response } from 'express';
+import * as dateFns from 'date-fns';
 
 @Injectable()
 export class NotionService {
   private readonly notion: Client;
+  private readonly logger = new Logger(NotionService.name);
 
   constructor() {
     this.notion = new Client({
       auth: process.env.NOTION_API_TOKEN,
+    });
+  }
+
+  getPostsRaw() {
+    return this.notion.databases.query({
+      database_id: process.env.NOTION_POST_DATABASE_ID,
+      // filter: {
+      //   and: [
+      //     {
+      //       property: 'status',
+      //       status: {
+      //         equals: 'Published',
+      //       },
+      //     },
+      //     {
+      //       property: 'published',
+      //       date: { before: new Date().toISOString() },
+      //     },
+      //     ..._filter,
+      //   ],
+      // },
+      sorts: [
+        {
+          timestamp: 'last_edited_time',
+          direction: 'descending',
+        },
+      ],
     });
   }
 
@@ -31,31 +58,17 @@ export class NotionService {
       };
     });
 
+    const formattedDate = dateFns.format(Date.now(), 'yyyy-MM-dd');
+
     return this.notion.databases
       .query({
         database_id: process.env.NOTION_POST_DATABASE_ID,
-        // filter: {
-        //   and: [
-        //     {
-        //       property: 'status',
-        //       status: {
-        //         equals: 'Published',
-        //       },
-        //     },
-        //     {
-        //       property: 'published',
-        //       date: { before: new Date().toISOString() },
-        //     },
-        //     ..._filter,
-        //   ],
-        // },
-        // sorts: [
-        //   ..._sorts,
-        //   {
-        //     property: 'published',
-        //     direction: 'descending',
-        //   },
-        // ],
+        filter: {
+          timestamp: 'last_edited_time',
+          last_edited_time: {
+            on_or_after: formattedDate,
+          },
+        },
       })
       .then((response) => this.convertNotionDatabaseToPosts(response.results));
   }
@@ -66,29 +79,33 @@ export class NotionService {
       // const mdString = n2m.toMarkdownString(mdblocks);
       //
       // const {minutes} = readingTime(mdString);
-
-      return {
-        id: post.id,
-        title: this.getProperties(post.properties.title)?.content ?? null,
-        cover: this.getProperties(post.cover)?.url ?? null,
-        published: this.getProperties(post.properties.published) ?? null,
-        slug: this.getProperties(post.properties.slug).content,
-        tags:
-          this.getProperties(post.properties.tags, true).map(
-            (x: any) => x.name,
-          ) || [],
-        authors: this.getProperties(post.properties.authors, true),
-        description: this.getProperties(post.properties.description).content,
-        featured: this.getProperties(post.properties.featured),
-        // readingTime: Math.ceil(minutes),
-        views: this.getProperties(post.properties.views),
-        language: this.getProperties(post.properties.language)?.name,
-        created_time: post.created_time,
-        last_edited_time: post.last_edited_time,
-        url: post.url,
-        status: this.getProperties(post.properties.status).name,
-        deleted: this.getProperties(post.properties.deleted) || false,
-      };
+      try {
+        return {
+          id: post.id,
+          title: this.getProperties(post.properties.title)?.content ?? null,
+          cover: this.getProperties(post.cover)?.url ?? null,
+          published: this.getProperties(post.properties.published) ?? null,
+          slug: this.getProperties(post.properties.slug).content,
+          tags:
+            this.getProperties(post.properties.tags, true).map(
+              (x: any) => x.name,
+            ) || [],
+          authors: this.getProperties(post.properties.authors, true),
+          description: this.getProperties(post.properties.description).content,
+          featured: this.getProperties(post.properties.featured),
+          // readingTime: Math.ceil(minutes),
+          views: this.getProperties(post.properties.views),
+          language: this.getProperties(post.properties.language)?.name,
+          created_time: post.created_time,
+          last_edited_time: post.last_edited_time,
+          url: post.url,
+          status: this.getProperties(post.properties.status).name,
+          deleted: this.getProperties(post.properties.deleted) || false,
+        };
+      } catch (e) {
+        this.logger.error(e.stack);
+        return null;
+      }
     });
 
     return Promise.all(promises);

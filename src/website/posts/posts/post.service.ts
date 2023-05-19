@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PostRepository } from '../../../app/repositories/post.repository';
 import { PostConstant } from '../../../app/constants/post.constant';
 import { NotionPageToHtml } from 'notion-page-to-html/dist/main/use-cases/notion-api-to-html';
 
 @Injectable()
 export class PostService {
+  private readonly logger = new Logger(PostService.name);
+
   constructor(private postRepository: PostRepository) {}
 
   findAll() {
@@ -41,7 +43,7 @@ export class PostService {
         };
       })
       .catch((error) => {
-        console.log(error);
+        this.logger.error(error.stack);
         return {
           html: '',
           title: '',

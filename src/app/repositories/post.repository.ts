@@ -24,15 +24,19 @@ export class PostRepository {
   }
 
   bulkCreateOrUpdate(posts: any[]) {
-    const bulkOps = posts.map((p) => {
-      return {
-        updateOne: {
-          filter: { id: p.id },
-          update: p,
-          upsert: true,
-        },
-      };
-    });
+    const bulkOps = posts
+      .filter((p) => p)
+      .map((p) => {
+        return {
+          updateOne: {
+            filter: {
+              id: p.id,
+            },
+            update: p,
+            upsert: true,
+          },
+        };
+      });
 
     return this.postMode.bulkWrite(bulkOps);
   }
