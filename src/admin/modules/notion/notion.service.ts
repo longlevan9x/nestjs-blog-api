@@ -85,7 +85,7 @@ export class NotionService {
           title: this.getProperties(post.properties.title)?.content ?? null,
           cover: this.getProperties(post.cover)?.url ?? null,
           published: this.getProperties(post.properties.published) ?? null,
-          slug: this.getProperties(post.properties.slug).content,
+          slug: this.getProperties(post.properties.slug)?.content,
           tags:
             this.getProperties(post.properties.tags, true).map(
               (x: any) => x.name,
