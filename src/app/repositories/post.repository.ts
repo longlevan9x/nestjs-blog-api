@@ -7,12 +7,20 @@ export class PostRepository {
     @InjectModel(PostModel.name) private postMode: Model<PostModel>,
   ) {}
 
-  findOne(id: string) {
+  findOne(filter) {
+    return this.postMode.findOne(filter);
+  }
+
+  findByIdNotDeleted(id) {
+    return this.findOne({ id, deleted: false });
+  }
+
+  findById(id: string) {
     return this.postMode.findOne({ id });
   }
 
   findAll(filter = {}) {
-    return this.postMode.find(filter).sort({ title: 1 });
+    return this.postMode.find(filter);
   }
 
   bulkCreateOrUpdate(posts: any[]) {

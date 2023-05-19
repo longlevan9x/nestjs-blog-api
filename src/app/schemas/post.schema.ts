@@ -61,6 +61,9 @@ export class PostModel {
 
   @Prop()
   url: string;
+
+  @Prop()
+  deleted: boolean;
 }
 
 export const PostSchema = SchemaFactory.createForClass(PostModel);

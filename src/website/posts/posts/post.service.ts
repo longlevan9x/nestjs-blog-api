@@ -8,17 +8,20 @@ export class PostService {
   constructor(private postRepository: PostRepository) {}
 
   findAll() {
-    return this.postRepository.findAll({
-      status: PostConstant.STATUS.PUBLISHED,
-    });
+    return this.postRepository
+      .findAll({
+        status: PostConstant.STATUS.PUBLISHED,
+        deleted: false,
+      })
+      .sort({ title: 1 });
   }
 
   findOne(id: string) {
-    return this.postRepository.findOne(id);
+    return this.postRepository.findByIdNotDeleted(id);
   }
 
   async getPostContent(id: string) {
-    const post = await this.postRepository.findOne(id);
+    const post = await this.postRepository.findByIdNotDeleted(id);
     const url = post.url.replace(
       'https://www.notion.so/',
       'https://kivie.notion.site/',

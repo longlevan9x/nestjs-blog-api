@@ -23,7 +23,7 @@ export class PostService {
     try {
       const posts = await this.notionService.getPosts();
       const rs = await this.postRepository.bulkCreateOrUpdate(posts);
-      console.log(rs);
+      console.log('PostService.fetchPostsFromNotion s', rs);
     } catch (e) {
       console.log('PostService.fetchPostsFromNotion e', e);
     }
@@ -40,7 +40,7 @@ export class PostService {
   }
 
   findOne(id: string) {
-    return this.postRepository.findOne(id);
+    return this.postRepository.findById(id);
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
@@ -52,7 +52,7 @@ export class PostService {
   }
 
   async getPostContent(id: string) {
-    const post = await this.postRepository.findOne(id);
+    const post = await this.postRepository.findById(id);
     const url = post.url.replace(
       'https://www.notion.so/',
       'https://kivie.notion.site/',

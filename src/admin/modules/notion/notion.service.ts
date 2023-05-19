@@ -87,6 +87,7 @@ export class NotionService {
         last_edited_time: post.last_edited_time,
         url: post.url,
         status: this.getProperties(post.properties.status).name,
+        deleted: this.getProperties(post.properties.deleted) || false,
       };
     });
 
