@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, Get } from '@nestjs/common';
+import { Body, Controller, Post, Request, Get, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from '../../../app/decorators/public.decorator';
 import LoginDto from './dtos/login.dto';
@@ -11,7 +11,7 @@ export class LoginController {
   // @UseGuards(LocalAuthGuard)
   // @UseGuards(AuthGuard('local'))
   @Post()
-  async login(@Body() loginDto: LoginDto) {
+  login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto.username, loginDto.password);
   }
 }

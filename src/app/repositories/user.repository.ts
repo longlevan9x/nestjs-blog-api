@@ -7,15 +7,22 @@ export class UserRepository {
     @InjectModel(UserModel.name) private userModel: Model<UserModel>,
   ) {}
 
-  async findByUsername(username: string): Promise<UserModel> {
+  findByUsername(username: string): Promise<UserModel> {
     return this.userModel.findOne({ username });
   }
 
-  async get(): Promise<UserModel[]> {
+  get(): Promise<UserModel[]> {
     return this.userModel.find();
   }
 
-  async create(user: UserModel): Promise<UserModel> {
+  create(user: UserModel): Promise<UserModel> {
     return this.userModel.create(user);
+  }
+
+  updateUserLogout(username: string) {
+    return this.userModel.updateOne(
+      { username: username },
+      { $inc: { tokenVersion: 1 } },
+    );
   }
 }

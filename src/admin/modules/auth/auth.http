@@ -24,3 +24,9 @@ GET {{host}}/admin/profile
 Accept: application/json
 Origin: {{host}}
 Authorization: Bearer {{access_token}}
+
+### Admin Auth Logout
+DELETE {{host}}/admin/logout
+Content-Type: application/json
+Origin: {{host}}
+Authorization: Bearer {{access_token}}

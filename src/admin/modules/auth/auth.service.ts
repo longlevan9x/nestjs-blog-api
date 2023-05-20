@@ -64,6 +64,10 @@ export class AuthService {
     };
   }
 
+  logout(username) {
+    return this.userRepository.updateUserLogout(username);
+  }
+
   async hashPassword(password: string): Promise<string> {
     const saltRounds = 10; // Number of salt rounds (affects the hashing time)
     const salt = await bcrypt.genSalt(saltRounds);

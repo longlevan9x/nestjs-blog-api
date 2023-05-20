@@ -46,10 +46,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
 
     const userModel = await this.userRepository.findByUsername(username);
 
-    console.log(tokenVersion, userModel);
     // Check if the token version matches the stored version
     if (!userModel || tokenVersion !== userModel.tokenVersion) {
-      return false;
+      throw new UnauthorizedException();
+      // return false;
     }
 
     return super.canActivate(context) as boolean;

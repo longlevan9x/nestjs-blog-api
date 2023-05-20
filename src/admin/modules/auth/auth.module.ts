@@ -15,9 +15,10 @@ import { RegisterController } from './register.controller';
 import { ProfileController } from './profile.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from '../../../app/guards/jwt-auth.guard';
+import { LogoutController } from './logout.controller';
 
 @Module({
-  controllers: [LoginController, RegisterController, ProfileController],
+  controllers: [LoginController, RegisterController, ProfileController, LogoutController],
   providers: [
     UserRepository,
     AuthService,
