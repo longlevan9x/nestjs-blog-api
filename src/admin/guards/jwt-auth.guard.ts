@@ -6,10 +6,9 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { IS_PUBLIC_KEY } from '../../app/decorators/public.decorator';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepository } from '../repositories/user.repository';
-import { jwtConstants } from '../constants/constants';
+import { UserRepository } from '../../app/repositories/user.repository';
 import { Request } from 'express';
 
 @Injectable()

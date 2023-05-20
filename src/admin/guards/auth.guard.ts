@@ -1,5 +1,5 @@
 /**
- * Cannot use
+ * Cannot use, use jwt-guard
  */
 import {
   CanActivate,
@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
-import { jwtConstants } from '../constants/constants';
+import { IS_PUBLIC_KEY } from '../../app/decorators/public.decorator';
+import { jwtConstants } from '../../app/constants/constants';
 import { Request } from 'express';
 
 @Injectable()

@@ -3,7 +3,6 @@ import { LoginController } from './login.controller';
 import { UserRepository } from '../../../app/repositories/user.repository';
 import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from '../../strategies/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../../../app/constants/constants';
 import { JwtStrategy } from '../../strategies/jwt.strategy';
@@ -14,15 +13,19 @@ import { UserModel, UserSchema } from '../../../app/schemas/user.schema';
 import { RegisterController } from './register.controller';
 import { ProfileController } from './profile.controller';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from '../../../app/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { LogoutController } from './logout.controller';
 
 @Module({
-  controllers: [LoginController, RegisterController, ProfileController, LogoutController],
+  controllers: [
+    LoginController,
+    RegisterController,
+    ProfileController,
+    LogoutController,
+  ],
   providers: [
     UserRepository,
     AuthService,
-    LocalStrategy,
     JwtStrategy,
     {
       provide: APP_GUARD,
