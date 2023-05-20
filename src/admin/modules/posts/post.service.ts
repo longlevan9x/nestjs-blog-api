@@ -19,7 +19,7 @@ export class PostService {
   // @Cron('*/5 * * * * *')
   @Cron(CronExpression.EVERY_30_SECONDS)
   async fetchPostsFromNotion() {
-    this.logger.debug('Called when the current second is 5');
+    this.logger.debug('Called when the current second is EVERY_30_SECONDS');
 
     try {
       const posts = await this.notionService.getPosts();
