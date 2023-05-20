@@ -7,6 +7,7 @@ Origin: {{host}}
   "username": "Kivie",
   "password": "123456"
 }
+> {% client.global.set("access_token", response.body.access_token); %}
 
 ### Admin Auth Register
 POST {{host}}/admin/register
@@ -17,3 +18,9 @@ Origin: {{host}}
   "username": "Kivie",
   "password": "123456"
 }
+
+### Admin Auth Profile
+GET {{host}}/admin/profile
+Accept: application/json
+Origin: {{host}}
+Authorization: Bearer {{access_token}}

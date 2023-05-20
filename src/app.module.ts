@@ -6,18 +6,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WebsiteModule } from './website/website.module';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './app/guards/jwt-auth.guard';
 
 @Module({
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
+  providers: [AppService],
   imports: [
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({

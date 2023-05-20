@@ -13,6 +13,13 @@ export class UserModel {
 
   @Prop()
   email?: string;
+
+  @Prop({
+    type: Number,
+    required: false,
+    default: 1,
+  })
+  tokenVersion?: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);

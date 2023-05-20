@@ -1,3 +1,6 @@
+/**
+ * Cannot use
+ */
 import {
   CanActivate,
   ExecutionContext,
@@ -8,17 +11,10 @@ import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { jwtConstants } from '../constants/constants';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  // canActivate(
-  //   context: ExecutionContext,
-  // ): boolean | Promise<boolean> | Observable<boolean> {
-  //   // Perform your authentication logic here
-  //   const request = context.switchToHttp().getRequest();
-  //   return request.isAuthenticated(); // Example: Check if the request is authenticated
-  // }
-
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -50,7 +46,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    // @ts-ignore
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
   }

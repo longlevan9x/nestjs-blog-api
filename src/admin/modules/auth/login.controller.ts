@@ -7,29 +7,11 @@ import LoginDto from './dtos/login.dto';
 export class LoginController {
   constructor(private authService: AuthService) {}
 
-  // @UseGuards(AuthGuard('local'))
-  // @UseGuards(LocalAuthGuard)
-  // @Post()
-  // async login(
-  //   @Body() { username, password },
-  // ): Promise<{ username: string; password: string }> {
-  //   // return { username, password };
-  //   return this.authService.login(req.user);
-  //   // const result = await this.loginService.login(email, password);
-  //
-  //   // return { success: !!result.message };
-  // }
-
   @Public()
   // @UseGuards(LocalAuthGuard)
+  // @UseGuards(AuthGuard('local'))
   @Post()
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto.username, loginDto.password);
-  }
-
-  // @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
   }
 }

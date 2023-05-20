@@ -12,28 +12,30 @@ import { UserModel, UserSchema } from '../../../app/schemas/user.schema';
 // import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 // import { APP_GUARD } from '@nestjs/core';
 import { RegisterController } from './register.controller';
+import { ProfileController } from './profile.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from '../../../app/guards/jwt-auth.guard';
 
 @Module({
-  controllers: [LoginController, RegisterController],
+  controllers: [LoginController, RegisterController, ProfileController],
   providers: [
     UserRepository,
     AuthService,
     LocalStrategy,
     JwtStrategy,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
   imports: [
     PassportModule,
     JwtModule.register({
-      // global: true,
+      global: true,
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '3600s' },
     }),
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
-
   ],
 })
 export class AuthModule {}

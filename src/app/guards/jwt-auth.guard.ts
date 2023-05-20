@@ -1,4 +1,5 @@
 import {
+  CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
@@ -6,14 +7,22 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { UserRepository } from '../repositories/user.repository';
+import { jwtConstants } from '../constants/constants';
+import { Request } from 'express';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private reflector: Reflector) {
+export class JwtAuthGuard extends AuthGuard('jwt') implements CanActivate {
+  constructor(
+    private reflector: Reflector,
+    private readonly jwtService: JwtService,
+    private userRepository: UserRepository,
+  ) {
     super();
   }
 
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
 
     if (!request.url.startsWith('/admin/')) {
@@ -29,7 +38,21 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
 
-    return super.canActivate(context);
+    const token = this.extractTokenFromHeader(request); // Assuming the token is sent in the Authorization header
+    const decodedPayload = this.jwtService.verify(token);
+
+    const username = decodedPayload.username;
+    const tokenVersion = decodedPayload.tokenVersion;
+
+    const userModel = await this.userRepository.findByUsername(username);
+
+    console.log(tokenVersion, userModel);
+    // Check if the token version matches the stored version
+    if (!userModel || tokenVersion !== userModel.tokenVersion) {
+      return false;
+    }
+
+    return super.canActivate(context) as boolean;
   }
 
   // canActivate(context: ExecutionContext) {
@@ -45,5 +68,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     return user;
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }

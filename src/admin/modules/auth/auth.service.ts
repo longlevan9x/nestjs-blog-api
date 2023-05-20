@@ -55,7 +55,10 @@ export class AuthService {
       throw new BadRequestException('Username or password not found');
     }
 
-    const payload = { username: username };
+    const payload = {
+      username: username,
+      tokenVersion: userModel.tokenVersion,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -71,7 +74,6 @@ export class AuthService {
     plainPassword: string,
     hashedPassword: string,
   ): Promise<boolean> {
-    const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
-    return isMatch;
+    return bcrypt.compare(plainPassword, hashedPassword);
   }
 }
