@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { UserInterface } from './user.interface';
-import { UserRepository } from './user.repository';
-import { User } from '../../../app/schemas/user.schema';
+import { UserRepository } from '../../../app/repositories/user.repository';
+import { UserModel } from '../../../app/schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
-  private readonly users: UserInterface[] = [];
+  private readonly users: UserModel[] = [];
 
   constructor(
-    @InjectModel(User.name) private catModel: Model<User>,
+    @InjectModel(UserModel.name) private userModel: Model<UserModel>,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -18,25 +17,25 @@ export class UserService {
     return '  ád  ád !';
   }
 
-  createUser(user: UserInterface): UserInterface {
+  createUser(user: UserModel): UserModel {
     this.users.push(user);
     return user;
   }
 
-  async getAllUsers(): Promise<UserInterface[]> {
+  async getAllUsers(): Promise<UserModel[]> {
     return this.userRepository.get();
   }
 
-  async findOne(username: string): Promise<UserInterface> {
+  async findOne(username: string): Promise<UserModel> {
     return this.userRepository.findByUsername(username);
   }
 
-  async create(createCatDto: any): Promise<User> {
-    const createdCat = new this.catModel(createCatDto);
+  async create(createCatDto: any): Promise<UserModel> {
+    const createdCat = new this.userModel(createCatDto);
     return createdCat.save();
   }
 
-  async findAll(): Promise<User[]> {
-    return this.catModel.find().exec();
+  async findAll(): Promise<UserModel[]> {
+    return this.userModel.find().exec();
   }
 }

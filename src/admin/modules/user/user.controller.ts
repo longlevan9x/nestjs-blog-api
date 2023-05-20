@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { UserInterface } from './user.interface';
 import { UserService } from './user.service';
-import { User } from '../../../app/schemas/user.schema';
+import { UserModel } from '../../../app/schemas/user.schema';
 
 @Controller('admin/users')
 export class UserController {
@@ -13,12 +12,12 @@ export class UserController {
   }
 
   @Post()
-  createUser(@Body() user: any): Promise<User> {
+  createUser(@Body() user: any): Promise<UserModel> {
     return this.userService.create(user);
   }
 
   @Get()
-  get(): Promise<User[]> {
+  get(): Promise<UserModel[]> {
     return this.userService.findAll();
   }
 }

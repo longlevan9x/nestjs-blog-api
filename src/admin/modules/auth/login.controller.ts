@@ -1,14 +1,11 @@
 import { Body, Controller, Post, Request, Get } from '@nestjs/common';
-import { LoginService } from './login.service';
 import { AuthService } from './auth.service';
 import { Public } from '../../../app/decorators/public.decorator';
+import LoginDto from './dtos/login.dto';
 
 @Controller('admin/login')
 export class LoginController {
-  constructor(
-    private loginService: LoginService,
-    private authService: AuthService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   // @UseGuards(AuthGuard('local'))
   // @UseGuards(LocalAuthGuard)
@@ -26,8 +23,8 @@ export class LoginController {
   @Public()
   // @UseGuards(LocalAuthGuard)
   @Post()
-  async login(@Body() body: Record<string, any>) {
-    return this.authService.login(body);
+  async login(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto.username, loginDto.password);
   }
 
   // @UseGuards(JwtAuthGuard)
