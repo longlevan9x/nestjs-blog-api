@@ -178,8 +178,8 @@ export class NotionService {
           title: this.getProperties(slider.properties.title)?.content ?? null,
           published: this.getProperties(slider.properties.published) ?? null,
           authors: this.getProperties(slider.properties.authors, true),
-          description: this.getProperties(slider.properties.description)
-            ?.content,
+          description:
+            this.getProperties(slider.properties.description)?.content || null,
           language: this.getProperties(slider.properties.language)?.name,
           created_time: slider.created_time,
           last_edited_time: slider.last_edited_time,
