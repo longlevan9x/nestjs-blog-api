@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { PostRepository } from '../../../app/repositories/post.repository';
-import { PostConstant } from '../../../app/constants/post.constant';
+import { PostRepository } from '../../app/repositories/post.repository';
+import { PostConstant } from '../../app/constants/post.constant';
 import { NotionPageToHtml } from 'notion-page-to-html/dist/main/use-cases/notion-api-to-html';
 
 @Injectable()

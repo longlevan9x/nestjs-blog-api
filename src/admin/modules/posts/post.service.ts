@@ -16,7 +16,7 @@ export class PostService {
     private readonly notionService: NotionService,
   ) {}
 
-  // @Cron('*/5 * * * * *')
+  // @Cron('* * * * * *')
   @Cron(CronExpression.EVERY_30_SECONDS)
   async fetchPostsFromNotion() {
     this.logger.debug('Called when the current second is EVERY_30_SECONDS');
@@ -25,10 +25,10 @@ export class PostService {
       const posts = await this.notionService.getPosts();
       const rs = await this.postRepository.bulkCreateOrUpdate(posts);
       this.logger.log(
-        'PostService.fetchPostsFromNotion s ' + JSON.stringify(rs),
+        'fetchPostsFromNotion s ' + JSON.stringify(rs),
       );
     } catch (e) {
-      this.logger.error('PostService.fetchPostsFromNotion e', e.stack);
+      this.logger.error('fetchPostsFromNotion e', e.stack);
     }
   }
 

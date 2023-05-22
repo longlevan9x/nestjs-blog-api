@@ -1,14 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Client } from '@notionhq/client';
-import * as process from 'process';
 import * as dateFns from 'date-fns';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class NotionService {
   private readonly notion: Client;
   private readonly logger = new Logger(NotionService.name);
 
-  constructor() {
+  constructor(private configService: ConfigService) {
     this.notion = new Client({
       auth: process.env.NOTION_API_TOKEN,
     });
@@ -150,5 +150,48 @@ export class NotionService {
     } catch (error) {
       throw new Error(`Failed to retrieve page with ID ${error.message}`);
     }
+  }
+
+  getSliders() {
+    const formattedDate = dateFns.format(Date.now(), 'yyyy-MM-dd');
+
+    return this.notion.databases
+      .query({
+        database_id: process.env.NOTION_SLIDER_DATABASE_ID,
+        filter: {
+          timestamp: 'last_edited_time',
+          last_edited_time: {
+            on_or_after: formattedDate,
+          },
+        },
+      })
+      .then((response) =>
+        this.convertNotionDatabaseToSliders(response.results),
+      );
+  }
+
+  convertNotionDatabaseToSliders(sliders: any[]) {
+    return sliders.map((slider: any) => {
+      try {
+        return {
+          id: slider.id,
+          title: this.getProperties(slider.properties.title)?.content ?? null,
+          published: this.getProperties(slider.properties.published) ?? null,
+          authors: this.getProperties(slider.properties.authors, true),
+          description: this.getProperties(slider.properties.description)
+            .content,
+          language: this.getProperties(slider.properties.language)?.name,
+          created_time: slider.created_time,
+          last_edited_time: slider.last_edited_time,
+          url: slider.url,
+          status: this.getProperties(slider.properties.status).name,
+          deleted: this.getProperties(slider.properties.deleted) || false,
+          files: this.getProperties(slider.properties.file, true) || null,
+        };
+      } catch (e) {
+        this.logger.error(e.stack);
+        return null;
+      }
+    });
   }
 }
