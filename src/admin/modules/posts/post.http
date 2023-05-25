@@ -10,7 +10,7 @@ Origin: {{host}}
 > {% client.global.set("access_token", response.body.access_token); %}
 
 ### Admin Get List Posts
-GET {{host}}/admin/sliders?keyword=ubuntu
+GET {{host}}/admin/posts
 Content-Type: application/json
 Origin: {{host}}
 Authorization: Bearer {{access_token}}
