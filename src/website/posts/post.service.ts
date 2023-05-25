@@ -16,7 +16,9 @@ export class PostService {
     };
 
     if (query.keyword) {
-      filter.title = query.keyword;
+      filter.title = {
+        $regex: new RegExp(query.keyword),
+      };
     }
 
     return this.postRepository.findAll(filter).sort({ title: 1 });
