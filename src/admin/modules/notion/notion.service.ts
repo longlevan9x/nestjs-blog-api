@@ -158,12 +158,12 @@ export class NotionService {
     return this.notion.databases
       .query({
         database_id: process.env.NOTION_SLIDER_DATABASE_ID,
-        filter: {
-          timestamp: 'last_edited_time',
-          last_edited_time: {
-            on_or_after: formattedDate,
-          },
-        },
+        // filter: {
+        //   timestamp: 'last_edited_time',
+        //   last_edited_time: {
+        //     on_or_after: formattedDate,
+        //   },
+        // },
       })
       .then((response) =>
         this.convertNotionDatabaseToSliders(response.results),
