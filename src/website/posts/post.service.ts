@@ -16,8 +16,9 @@ export class PostService {
     };
 
     if (query.keyword) {
+      console.log(query.keyword);
       filter.title = {
-        $regex: new RegExp(query.keyword, 'g'),
+        $regex: new RegExp(query.keyword, 'gi'),
       };
     }
 
