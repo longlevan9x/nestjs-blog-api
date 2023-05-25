@@ -1,0 +1,16 @@
+### Admin Auth Login
+POST {{host}}/admin/login
+Content-Type: application/json
+Origin: {{host}}
+
+{
+  "username": "Kivie",
+  "password": "123456"
+}
+> {% client.global.set("access_token", response.body.access_token); %}
+
+### Admin Get List Posts
+GET {{host}}/admin/sliders?keyword=ubuntu
+Content-Type: application/json
+Origin: {{host}}
+Authorization: Bearer {{access_token}}
