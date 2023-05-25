@@ -9,13 +9,17 @@ export class PostService {
 
   constructor(private postRepository: PostRepository) {}
 
-  findAll() {
-    return this.postRepository
-      .findAll({
-        status: PostConstant.STATUS.PUBLISHED,
-        deleted: false,
-      })
-      .sort({ title: 1 });
+  findAll(query?: any) {
+    const filter: any = {
+      status: PostConstant.STATUS.PUBLISHED,
+      deleted: false,
+    };
+
+    if (query.keyword) {
+      filter.title = query.keyword;
+    }
+
+    return this.postRepository.findAll(filter).sort({ title: 1 });
   }
 
   findOne(id: string) {

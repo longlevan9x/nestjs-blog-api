@@ -6,8 +6,8 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  findAll(@Query() query) {
+    return this.postService.findAll(query);
   }
 
   @Get('/:id/content')
