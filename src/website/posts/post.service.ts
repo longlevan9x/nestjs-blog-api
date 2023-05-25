@@ -17,7 +17,7 @@ export class PostService {
 
     if (query.keyword) {
       filter.title = {
-        $regex: new RegExp(query.keyword),
+        $regex: new RegExp(query.keyword, 'g'),
       };
     }
 
