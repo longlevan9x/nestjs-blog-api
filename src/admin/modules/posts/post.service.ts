@@ -24,9 +24,7 @@ export class PostService {
     try {
       const posts = await this.notionService.getPosts();
       const rs = await this.postRepository.bulkCreateOrUpdate(posts);
-      this.logger.log(
-        'fetchPostsFromNotion s ' + JSON.stringify(rs),
-      );
+      this.logger.log('fetchPostsFromNotion s ' + JSON.stringify(rs));
     } catch (e) {
       this.logger.error('fetchPostsFromNotion e', e.stack);
     }

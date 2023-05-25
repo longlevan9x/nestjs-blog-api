@@ -2,6 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Client } from '@notionhq/client';
 import * as dateFns from 'date-fns';
 import { ConfigService } from '@nestjs/config';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import * as process from 'process';
 
 @Injectable()
 export class NotionService {
@@ -12,6 +14,18 @@ export class NotionService {
     this.notion = new Client({
       auth: process.env.NOTION_API_TOKEN,
     });
+  }
+
+  getDatabase(databaseId: string) {
+    return this.notion.databases.retrieve({ database_id: databaseId });
+  }
+
+  getPostTags() {
+    return this.getDatabase(process.env.NOTION_POST_DATABASE_ID).then(
+      (result) => {
+        return this.getProperties(result.properties?.tags, true)?.options || [];
+      },
+    );
   }
 
   getPostsRaw() {
