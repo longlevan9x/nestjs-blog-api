@@ -2,11 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as process from 'process';
 import { ValidationPipe } from '@nestjs/common';
-import { inject } from '@vercel/analytics';
+// import { inject } from '@vercel/analytics';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  inject();
+  // inject();
   app.useGlobalPipes(new ValidationPipe());
 
   const whitelist = process.env.ALLOW_LIST || '';
