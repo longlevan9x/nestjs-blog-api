@@ -12,11 +12,10 @@ export class PostService {
   findAll(query?: any) {
     const filter: any = {
       status: PostConstant.STATUS.PUBLISHED,
-      deleted: false,
+      archived: false,
     };
 
     if (query.keyword) {
-      console.log(query.keyword);
       filter.title = {
         $regex: new RegExp(query.keyword, 'gi'),
       };

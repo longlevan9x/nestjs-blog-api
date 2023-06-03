@@ -12,7 +12,7 @@ export class PostRepository {
   }
 
   findByIdNotDeleted(id) {
-    return this.findOne({ id, deleted: false });
+    return this.findOne({ id, archived: false });
   }
 
   findById(id: string) {

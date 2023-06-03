@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
+import { NotionService } from '../notion/notion.service';
 
 @Injectable()
 export class BlocksService {
+  constructor(private notionService: NotionService) {}
+
   create(createBlockDto: CreateBlockDto) {
     return 'This action adds a new block';
   }
 
-  findAll() {
-    return `This action returns all blocks`;
+  findAll(pageId: string) {
+    return this.notionService.getBlock(pageId);
   }
 
   findOne(id: number) {

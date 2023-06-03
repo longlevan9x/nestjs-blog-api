@@ -50,7 +50,7 @@ export class SliderModel {
   language: string;
 
   @Prop()
-  deleted: boolean;
+  archived: boolean;
 
   @Prop(
     raw({

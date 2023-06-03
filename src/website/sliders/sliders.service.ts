@@ -16,7 +16,7 @@ export class SlidersService {
     return this.sliderRepository
       .findAll({
         status: SliderConstant.STATUS.PUBLISHED,
-        deleted: false,
+        archived: false,
       })
       .sort({ title: 1 });
   }

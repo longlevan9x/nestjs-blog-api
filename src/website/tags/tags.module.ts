@@ -3,7 +3,7 @@ import { TagsService } from './tags.service';
 import { TagsController } from './tags.controller';
 import { TagRepository } from '../../app/repositories/tag.repository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TagModel, TagSchema } from '../../app/schemas/tag';
+import { TagModel, TagSchema } from '../../app/schemas/tag.schema';
 
 @Module({
   controllers: [TagsController],

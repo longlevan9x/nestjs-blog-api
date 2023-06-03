@@ -20,9 +20,9 @@ export class BlocksController {
     return this.blocksService.create(createBlockDto);
   }
 
-  @Get()
-  findAll() {
-    return this.blocksService.findAll();
+  @Get(':page_id')
+  findAll(@Param('page_id') pageId: string) {
+    return this.blocksService.findAll(pageId);
   }
 
   @Get(':id')

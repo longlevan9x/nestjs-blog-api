@@ -1,6 +1,6 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TagModel } from '../schemas/tag';
+import { TagModel } from '../schemas/tag.schema';
 
 export class TagRepository {
   constructor(@InjectModel(TagModel.name) private tagModel: Model<TagModel>) {}
