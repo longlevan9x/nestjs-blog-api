@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WebsiteModule } from './website/website.module';
+import { SlackNotificationModule } from './notification/slack-notification/slack-notification.module';
+import { SlackModule } from './notification/slack/slack.module';
 
 @Module({
   controllers: [AppController],
@@ -25,6 +27,8 @@ import { WebsiteModule } from './website/website.module';
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AdminModule,
     WebsiteModule,
+    SlackNotificationModule,
+    SlackModule,
   ],
 })
 export class AppModule {}
