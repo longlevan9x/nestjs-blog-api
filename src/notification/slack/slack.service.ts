@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { WebClient } from '@slack/web-api';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
-export class SlackNotificationService {
-  private readonly logger = new Logger(SlackNotificationService.name);
+export class SlackService {
+  private readonly logger = new Logger(SlackService.name);
   private readonly slackClient: WebClient;
 
   constructor() {
