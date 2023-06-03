@@ -3,20 +3,32 @@ import { Client } from '@notionhq/client';
 import * as dateFns from 'date-fns';
 import { ConfigService } from '@nestjs/config';
 import * as process from 'process';
+import { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints';
 
 @Injectable()
 export class NotionService {
-  private readonly notion: Client;
+  private readonly _notion: Client;
   private readonly logger = new Logger(NotionService.name);
 
   constructor(private configService: ConfigService) {
-    this.notion = new Client({
+    this._notion = new Client({
       auth: process.env.NOTION_API_TOKEN,
     });
   }
 
+  get notion(): Client {
+    return this._notion;
+  }
+
+  queryDatabase(query: { start_cursor?: string }) {
+    return this._notion.databases.query({
+      ...{ database_id: process.env.NOTION_POST_DATABASE_ID },
+      ...query,
+    });
+  }
+
   getDatabase(databaseId: string) {
-    return this.notion.databases.retrieve({ database_id: databaseId });
+    return this._notion.databases.retrieve({ database_id: databaseId });
   }
 
   getPostTags() {
@@ -28,7 +40,7 @@ export class NotionService {
   }
 
   getPostsRaw() {
-    return this.notion.databases.query({
+    return this._notion.databases.query({
       database_id: process.env.NOTION_POST_DATABASE_ID,
       // filter: {
       //   and: [
@@ -73,7 +85,7 @@ export class NotionService {
 
     const formattedDate = dateFns.format(Date.now(), 'yyyy-MM-dd');
 
-    return this.notion.databases
+    return this._notion.databases
       .query({
         database_id: process.env.NOTION_POST_DATABASE_ID,
         filter: {
@@ -151,15 +163,25 @@ export class NotionService {
 
   async getPageDetailById(id: string): Promise<any> {
     try {
-      return await this.notion.pages.retrieve({ page_id: id });
+      return await this._notion.pages.retrieve({ page_id: id });
     } catch (error) {
       throw new Error(`Failed to retrieve page with ID ${error.message}`);
     }
   }
 
+  async getPageProperty({
+    page_id,
+    property_id,
+  }: {
+    page_id: string;
+    property_id: string;
+  }) {
+    return this._notion.pages.properties.retrieve({ page_id, property_id });
+  }
+
   async getBlock(id) {
     try {
-      return await this.notion.blocks.children.list({ block_id: id });
+      return await this._notion.blocks.children.list({ block_id: id });
     } catch (error) {
       throw new Error(`Failed to retrieve page with ID ${error.message}`);
     }
@@ -168,7 +190,7 @@ export class NotionService {
   getSliders() {
     const formattedDate = dateFns.format(Date.now(), 'yyyy-MM-dd');
 
-    return this.notion.databases
+    return this._notion.databases
       .query({
         database_id: process.env.NOTION_SLIDER_DATABASE_ID,
         // filter: {
