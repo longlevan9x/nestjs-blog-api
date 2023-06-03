@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import RegisterDto from './dtos/register.dto';
 import { Public } from '../../../app/decorators/public.decorator';
 
-@Controller('admin/register')
+@Controller('register')
 export class RegisterController {
   constructor(private authService: AuthService) {}
 

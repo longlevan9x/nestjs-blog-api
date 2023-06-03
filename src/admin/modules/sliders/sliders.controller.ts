@@ -11,7 +11,7 @@ import { SlidersService } from './sliders.service';
 import { CreateSliderDto } from './dto/create-slider.dto';
 import { UpdateSliderDto } from './dto/update-slider.dto';
 
-@Controller('admin/sliders')
+@Controller()
 export class SlidersController {
   constructor(private readonly slidersService: SlidersService) {}
 

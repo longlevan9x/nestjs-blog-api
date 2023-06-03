@@ -4,7 +4,7 @@ import { Public } from '../../../app/decorators/public.decorator';
 import LoginDto from './dtos/login.dto';
 // import { AuthGuard } from '@nestjs/passport';
 
-@Controller('admin/login')
+@Controller('login')
 export class LoginController {
   constructor(private authService: AuthService) {}
 

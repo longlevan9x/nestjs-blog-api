@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Client } from '@notionhq/client';
 import * as dateFns from 'date-fns';
 import { ConfigService } from '@nestjs/config';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import * as process from 'process';
 
 @Injectable()

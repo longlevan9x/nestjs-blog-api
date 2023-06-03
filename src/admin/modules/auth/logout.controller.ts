@@ -1,7 +1,7 @@
 import { Controller, Delete, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
-@Controller('admin/logout')
+@Controller('logout')
 export class LogoutController {
   constructor(private authService: AuthService) {}
 
