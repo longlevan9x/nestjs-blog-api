@@ -125,7 +125,7 @@ export class NotionService {
           last_edited_time: post.last_edited_time,
           url: post.url,
           status: this.getProperties(post.properties.status).name,
-          archived: this.getProperties(post.archived),
+          archived: post.archived,
         };
       } catch (e) {
         this.logger.error(e.stack);
@@ -220,7 +220,7 @@ export class NotionService {
           last_edited_time: slider.last_edited_time,
           url: slider.url,
           status: this.getProperties(slider.properties.status).name,
-          archived: this.getProperties(slider.archived),
+          archived: slider.archived,
           files: this.getProperties(slider.properties.file, true) || null,
         };
       } catch (e) {
