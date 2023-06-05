@@ -31,6 +31,10 @@ export class PostService {
     return _query;
   }
 
+  findAllId() {
+    return this.postRepository.findAll({}).select('id');
+  }
+
   findOne(id: string) {
     return this.postRepository.findByIdNotDeleted(id);
   }
