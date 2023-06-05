@@ -11,6 +11,12 @@ export const websiteRoutes: Routes = [
       {
         path: '/posts',
         module: PostModule,
+        children: [
+          {
+            path: '/:id/blocks',
+            module: BlocksModule,
+          },
+        ],
       },
       {
         path: '/sliders',
@@ -19,10 +25,6 @@ export const websiteRoutes: Routes = [
       {
         path: '/tags',
         module: TagsModule,
-      },
-      {
-        path: '/:id/blocks',
-        module: BlocksModule,
       },
     ],
   },
