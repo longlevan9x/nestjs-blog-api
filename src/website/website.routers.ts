@@ -2,6 +2,7 @@ import { Routes } from '@nestjs/core';
 import { PostModule } from './posts/post.module';
 import { SlidersModule } from './sliders/sliders.module';
 import { TagsModule } from './tags/tags.module';
+import { BlocksModule } from './blocks/blocks.module';
 
 export const websiteRoutes: Routes = [
   {
@@ -18,6 +19,10 @@ export const websiteRoutes: Routes = [
       {
         path: '/tags',
         module: TagsModule,
+      },
+      {
+        path: '/:id/blocks',
+        module: BlocksModule,
       },
     ],
   },
