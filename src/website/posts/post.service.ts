@@ -10,6 +10,7 @@ export class PostService {
   constructor(private postRepository: PostRepository) {}
 
   findAll(query?: any) {
+    const limit = query.limit;
     const filter: any = {
       status: PostConstant.STATUS.PUBLISHED,
       archived: false,
@@ -21,7 +22,13 @@ export class PostService {
       };
     }
 
-    return this.postRepository.findAll(filter).sort({ title: 1 });
+    let _query = this.postRepository.findAll(filter).sort({ title: 1 });
+
+    if (limit) {
+      _query = _query.limit(limit);
+    }
+
+    return _query;
   }
 
   findOne(id: string) {
