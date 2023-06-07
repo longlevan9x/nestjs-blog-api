@@ -6,30 +6,47 @@ import { NotionPageToHtml } from 'notion-page-to-html/dist/main/use-cases/notion
 import { PostRepository } from 'src/app/repositories/post.repository';
 import { PostConstant } from 'src/app/constants/post.constant';
 import { NotionService } from '../notion/notion.service';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class PostService {
   private readonly logger = new Logger(PostService.name);
 
   constructor(
+    @InjectQueue('block') private readonly blockQueue: Queue,
     private postRepository: PostRepository,
     private readonly notionService: NotionService,
   ) {}
 
   // @Cron('* * * * * *')
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_MINUTE)
   async fetchPostsFromNotion() {
-    this.logger.debug('Called when the current second is EVERY_30_SECONDS');
+    this.logger.debug('Called when the current second is EVERY_MINUTE');
 
     try {
       const posts = await this.notionService.getPosts();
       const rs = await this.postRepository.bulkCreateOrUpdate(posts);
+
+      for (const postKey in posts) {
+        await this.blockQueue.add(
+          'updateBlocks',
+          { id: posts[postKey].id },
+          { delay: parseInt(postKey) * 1000 },
+        );
+      }
+
       this.logger.log('fetchPostsFromNotion s ' + JSON.stringify(rs));
     } catch (e) {
       this.logger.error('fetchPostsFromNotion e', e.stack);
     }
   }
 
+  // @Cron(CronExpression.EVERY_SECOND)
+  // async test() {
+  //   this.logger.log(23444);
+  //   await this.blockQueue.add('updateBlocks', { id: '234' });
+  // }
   create(createPostDto: CreatePostDto) {
     return 'This action adds a new post';
   }

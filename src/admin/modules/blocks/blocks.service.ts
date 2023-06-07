@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateBlockDto } from './dto/create-block.dto';
 import { UpdateBlockDto } from './dto/update-block.dto';
 import { NotionService } from '../notion/notion.service';
 
 @Injectable()
 export class BlocksService {
+  private readonly logger = new Logger(BlocksService.name);
+
   constructor(private notionService: NotionService) {}
 
   create(createBlockDto: CreateBlockDto) {

@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/bull": "^0.6.3",
     "@nestjs/common": "^9.4.1",
     "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.4.1",
@@ -33,6 +34,7 @@
     "@slack/web-api": "^6.8.1",
     "@vercel/analytics": "^1.0.1",
     "bcryptjs": "^2.4.3",
+    "bull": "^4.10.4",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "date-fns": "^2.30.0",

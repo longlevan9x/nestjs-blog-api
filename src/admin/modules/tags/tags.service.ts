@@ -40,9 +40,9 @@ export class TagsService {
       const tags = await this.notionService.getPostTags();
       await this.tagRepository.removeAll();
       const rs = await this.tagRepository.insertMany(tags);
-      this.logger.log('fetchPostsFromNotion s ' + JSON.stringify(rs));
+      this.logger.log('fetchTagsFromNotion s ' + JSON.stringify(rs));
     } catch (e) {
-      this.logger.error('fetchPostsFromNotion e', e.stack);
+      this.logger.error('fetchTagsFromNotion e', e.stack);
     }
   }
 }

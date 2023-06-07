@@ -13,8 +13,12 @@ export class BlockModel {
 
   @Prop(
     raw({
-      type: String,
-      page_id: String,
+      type: {
+        type: String,
+      },
+      page_id: {
+        type: String,
+      },
     }),
   )
   parent: Record<any, any>;
