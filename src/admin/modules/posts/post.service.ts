@@ -29,9 +29,6 @@ export class PostService {
       const rs = await this.postRepository.bulkCreateOrUpdate(posts);
 
       for (const postKey in posts) {
-        if (posts[postKey].id !== '1193d206-5484-405e-b769-05f1a918fabf') {
-          continue;
-        }
         await this.blockQueue.add(
           'updateBlocks',
           { id: posts[postKey].id },

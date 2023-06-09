@@ -42,12 +42,7 @@ export class BlocksProcessor {
       }
     }
 
-    blocks.forEach((b) => {
-      if (b.has_children) {
-        console.log(b);
-      }
-    });
-    await this.blockRepository.bulkCreateOrUpdate(resBlock.results);
+    await this.blockRepository.bulkCreateOrUpdate(blocks);
     this.logger.debug('UpdateBlock completed');
     done(null, true);
   }
