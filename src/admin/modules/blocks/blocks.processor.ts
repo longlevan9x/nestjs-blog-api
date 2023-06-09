@@ -22,13 +22,17 @@ export class BlocksProcessor {
 
   @Process('updateBlocks')
   async handleUpdateBlocks(job: Job, done: DoneCallback) {
-    this.logger.debug('Start UpdateBlock...');
-    this.logger.debug(job.data);
-    const blocks = await this.getBlock(job.data.id);
+    try {
+      this.logger.debug('Start UpdateBlock...');
+      this.logger.debug(job.data);
+      const blocks = await this.getBlock(job.data.id);
 
-    await this.blockRepository.bulkCreateOrUpdate(blocks);
-    this.logger.debug('UpdateBlock completed');
-    done(null, true);
+      await this.blockRepository.bulkCreateOrUpdate(blocks);
+      this.logger.debug('UpdateBlock completed');
+      done(null, true);
+    } catch (e) {
+      done(e, true);
+    }
   }
 
   async getBlock(id: string) {
