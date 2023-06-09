@@ -21,9 +21,10 @@ export class BlocksProcessor {
   @Process('updateBlocks')
   async handleUpdateBlocks(job: Job, done: DoneCallback) {
     this.logger.debug('Start transcoding...');
-    const resBlock = await this.notionService.getBlock(job.data.id);
-    await this.blockRepository.bulkCreateOrUpdate(resBlock.results);
     this.logger.debug(job.data);
+    const resBlock = await this.notionService.getBlock(job.data.id);
+
+    await this.blockRepository.bulkCreateOrUpdate(resBlock.results);
     this.logger.debug('Transcoding completed');
     done(null, true);
   }
