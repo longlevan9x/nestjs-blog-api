@@ -1,7 +1,7 @@
 import {
   OnGlobalQueueCompleted,
-  OnQueueFailed,
   OnQueueError,
+  OnQueueFailed,
   Process,
   Processor,
 } from '@nestjs/bull';
@@ -24,27 +24,25 @@ export class BlocksProcessor {
   async handleUpdateBlocks(job: Job, done: DoneCallback) {
     this.logger.debug('Start UpdateBlock...');
     this.logger.debug(job.data);
-    if (job.data.id !== '1193d206-5484-405e-b769-05f1a918fabf') {
-      done(null, true);
-      return;
-    }
-
-    const resBlock = await this.notionService.getBlock(job.data.id);
-
-    const blocks: BlockModel[] = resBlock.results as any;
-    for (let i = 0; i < blocks.length; i++) {
-      if (blocks[i].has_children) {
-        const resChildrenBlock = await this.notionService.getBlock(
-          blocks[i].id,
-        );
-
-        blocks[i].children = resChildrenBlock.results;
-      }
-    }
+    const blocks = await this.getBlock(job.data.id);
 
     await this.blockRepository.bulkCreateOrUpdate(blocks);
     this.logger.debug('UpdateBlock completed');
     done(null, true);
+  }
+
+  async getBlock(id: string) {
+    const resBlock = await this.notionService.getBlock(id);
+    const blocks = resBlock.results as any;
+
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i];
+      if (block.has_children) {
+        blocks[i].children = await this.getBlock(block.id);
+      }
+    }
+
+    return blocks;
   }
 
   // @OnQueueCompleted()
