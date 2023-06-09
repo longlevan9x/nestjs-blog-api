@@ -94,6 +94,12 @@ export class NotionService {
             on_or_after: formattedDate,
           },
         },
+        sorts: [
+          {
+            timestamp: 'last_edited_time',
+            direction: 'descending',
+          },
+        ],
       })
       .then((response) => this.convertNotionDatabaseToPosts(response.results));
   }
