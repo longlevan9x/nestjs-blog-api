@@ -32,7 +32,12 @@ export class PostService {
   }
 
   findAllId() {
-    return this.postRepository.findAll({}).select('id');
+    return this.postRepository
+      .findAll({
+        status: PostConstant.STATUS.PUBLISHED,
+        archived: false,
+      })
+      .select('id');
   }
 
   findOne(id: string) {
