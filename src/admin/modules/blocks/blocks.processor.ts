@@ -1,6 +1,7 @@
 import {
   OnGlobalQueueCompleted,
-  OnQueueCompleted,
+  OnQueueFailed,
+  OnQueueError,
   Process,
   Processor,
 } from '@nestjs/bull';
@@ -23,7 +24,6 @@ export class BlocksProcessor {
     this.logger.debug('Start transcoding...');
     this.logger.debug(job.data);
     const resBlock = await this.notionService.getBlock(job.data.id);
-
     await this.blockRepository.bulkCreateOrUpdate(resBlock.results);
     this.logger.debug('Transcoding completed');
     done(null, true);
@@ -36,6 +36,20 @@ export class BlocksProcessor {
 
   @OnGlobalQueueCompleted()
   async onGlobalCompleted(jobId: number, result: any) {
-    console.log('(Global) on completed: job ', jobId, ' -> result: ', result);
+    this.logger.log('(Global) on completed: job ', [
+      jobId,
+      ' -> result: ',
+      result,
+    ]);
+  }
+
+  @OnQueueError()
+  async OnQueueError(error: Error) {
+    this.logger.error('OnQueueError: job ', error);
+  }
+
+  @OnQueueFailed()
+  OnQueueFailed(job: Job, err: Error) {
+    this.logger.error('OnQueueError: job ', [job, err]);
   }
 }
