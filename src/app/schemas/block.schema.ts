@@ -33,6 +33,10 @@ export class BlockModel {
 
   @Prop()
   has_children: boolean;
+
+  @Prop({ type: SchemaTypes.Mixed })
+  children: Record<any, any>;
+
   @Prop()
   archived: boolean;
 
