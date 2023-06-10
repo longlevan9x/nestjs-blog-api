@@ -22,6 +22,12 @@ export class PostService {
       };
     }
 
+    if (query.tags) {
+      filter.tags = {
+        $in: query.tags.split(','),
+      };
+    }
+
     let _query = this.postRepository.findAll(filter).sort({ title: 1 });
 
     if (limit) {
